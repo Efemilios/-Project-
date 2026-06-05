@@ -66,7 +66,6 @@ equipment_categories ───────────────────�
 
 ### Απαιτήσεις
 - XAMPP (Apache + MySQL + PHP 7.4+)
-- Browser (Chrome / Firefox)
 
 ### Βήματα
 
@@ -123,5 +122,3 @@ equipment_categories ───────────────────�
 Στο Cisco Packet Tracer η τοπολογία υλοποιεί κυκλικό δίκτυο 5 routers / 2 switches / 2 PCs με OSPF dynamic routing, όπου PC1 πραγματοποιεί HTTP GET request προς τον web server (Apache) που φιλοξενεί την εφαρμογή.
 
 ---
-
-*Καλή επιτυχία!* 🎓

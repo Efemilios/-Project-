@@ -74,40 +74,37 @@ while ($eq = $eq_result->fetch_assoc()) {
     <title>AutoDealer — Διαμόρφωση</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
+    <script>
+        (function () {
+            try {
+                var t = localStorage.getItem('autodealer-theme');
+                if (t !== 'light' && t !== 'dark') {
+                    t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+                }
+                document.documentElement.setAttribute('data-theme', t);
+                document.documentElement.setAttribute('data-bs-theme', t);
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.documentElement.setAttribute('data-bs-theme', 'dark');
+            }
+        })();
+    </script>
     <style>
-        body { background:#0f1117; color:#e0e0e0; font-family:'Segoe UI',sans-serif; }
-        .navbar { background:#1a1d27 !important; border-bottom:2px solid #c0392b; }
+        .navbar { border-bottom:2px solid #c0392b; }
         .navbar-brand { color:#c0392b !important; font-weight:700; font-size:1.4rem; }
-        .nav-link { color:#ccc !important; }
         .nav-link:hover, .nav-link.active { color:#c0392b !important; }
-        .card-section { background:#1a1d27; border:1px solid #2a2d3a; border-radius:12px; }
-        .form-control, .form-select {
-            background:#0f1117; border:1px solid #3a3d4a; color:#e0e0e0;
-        }
-        .form-control:focus, .form-select:focus {
-            background:#0f1117; color:#fff; border-color:#c0392b;
-            box-shadow:0 0 0 .2rem rgba(192,57,43,.25);
-        }
-        .section-title { color:#fff; border-left:4px solid #c0392b; padding-left:12px; margin:2rem 0 1rem; }
+        .section-title { border-left:4px solid #c0392b; padding-left:12px; margin:2rem 0 1rem; }
 
         /* Price sidebar */
-        .price-box { background:#1a1d27; border:2px solid #c0392b; border-radius:12px; position:sticky; top:80px; }
+        .price-box { border:2px solid #c0392b; border-radius:12px; position:sticky; top:80px; }
         .price-total { font-size:2rem; font-weight:700; color:#c0392b; }
 
         /* Equipment checkboxes */
-        .eq-item {
-            background:#0f1117; border:1px solid #2a2d3a; border-radius:8px;
-            padding:10px 14px; margin-bottom:8px; cursor:pointer;
-            transition:border-color .2s, background .2s;
-        }
         .eq-item:hover { border-color:#c0392b; }
         .eq-item input[type=checkbox]:checked ~ label { color:#c0392b; }
-        .eq-item.selected { border-color:#c0392b; background:#1e0f0d; }
+        .eq-item.selected { border-color:#c0392b; }
         .eq-price { color:#f39c12; font-weight:600; }
-
-        .cat-header { color:#aaa; font-size:.8rem; text-transform:uppercase; letter-spacing:1px;
-                      border-bottom:1px solid #2a2d3a; padding-bottom:6px; margin:16px 0 8px; }
-        footer { background:#1a1d27; border-top:1px solid #2a2d3a; color:#888; }
     </style>
 </head>
 <body>
@@ -119,12 +116,17 @@ while ($eq = $eq_result->fetch_assoc()) {
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="nav">
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
         <li class="nav-item"><a class="nav-link" href="index.php"><i class="bi bi-house"></i> Αρχική</a></li>
         <li class="nav-item"><a class="nav-link" href="cars.php"><i class="bi bi-car-front"></i> Αυτοκίνητα</a></li>
         <li class="nav-item"><a class="nav-link" href="equipment.php"><i class="bi bi-tools"></i> Εξοπλισμός</a></li>
         <li class="nav-item"><a class="nav-link active" href="configurator.php"><i class="bi bi-sliders"></i> Διαμόρφωση</a></li>
         <li class="nav-item"><a class="nav-link" href="configurations.php"><i class="bi bi-journal-check"></i> Αποθηκευμένα</a></li>
+        <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+          <button type="button" id="themeToggle" class="btn btn-sm btn-outline-secondary theme-toggle" title="Εναλλαγή θέματος" aria-label="Εναλλαγή θέματος">
+            <i id="themeIcon" class="bi bi-moon-stars-fill"></i>
+          </button>
+        </li>
       </ul>
     </div>
   </div>
@@ -153,7 +155,7 @@ while ($eq = $eq_result->fetch_assoc()) {
 
         <!-- Βήμα 1: Επιλογή Αυτοκινήτου -->
         <div class="card-section p-4 mb-4">
-          <h5 class="text-white mb-3"><span class="badge bg-danger me-2">1</span>Επιλογή Αυτοκινήτου</h5>
+          <h5 class="mb-3"><span class="badge bg-danger me-2">1</span>Επιλογή Αυτοκινήτου</h5>
           <select class="form-select form-select-lg" name="car_id" id="car_select" required>
             <option value="">— Επιλέξτε αυτοκίνητο —</option>
             <?php
@@ -170,13 +172,13 @@ while ($eq = $eq_result->fetch_assoc()) {
             <?php endwhile; ?>
           </select>
           <div class="mt-2 text-secondary small">
-            Βασική τιμή: <span id="base_price_display" class="text-white fw-bold">—</span>
+            Βασική τιμή: <span id="base_price_display" class="fw-bold">—</span>
           </div>
         </div>
 
         <!-- Βήμα 2: Επιλογή Εξοπλισμού -->
         <div class="card-section p-4 mb-4">
-          <h5 class="text-white mb-3"><span class="badge bg-danger me-2">2</span>Επιλογή Εξοπλισμού</h5>
+          <h5 class="mb-3"><span class="badge bg-danger me-2">2</span>Επιλογή Εξοπλισμού</h5>
           <p class="text-secondary small mb-3">Κλικ σε κάθε επιλογή για να την ενεργοποιήσετε. Η τιμή ενημερώνεται αυτόματα.</p>
 
           <?php foreach ($equipment_by_cat as $cat_name => $items): ?>
@@ -204,7 +206,7 @@ while ($eq = $eq_result->fetch_assoc()) {
 
         <!-- Βήμα 3: Στοιχεία Πελάτη -->
         <div class="card-section p-4">
-          <h5 class="text-white mb-3"><span class="badge bg-danger me-2">3</span>Στοιχεία Πελάτη (Προαιρετικά)</h5>
+          <h5 class="mb-3"><span class="badge bg-danger me-2">3</span>Στοιχεία Πελάτη (Προαιρετικά)</h5>
           <div class="row g-3">
             <div class="col-md-6">
               <label class="form-label">Όνομα Πελάτη</label>
@@ -221,7 +223,7 @@ while ($eq = $eq_result->fetch_assoc()) {
       <!-- ΔΕΞΙΑ: Σύνοψη Τιμής -->
       <div class="col-lg-4">
         <div class="price-box p-4">
-          <h5 class="text-white mb-3"><i class="bi bi-receipt me-2"></i>Σύνοψη Quote</h5>
+          <h5 class="mb-3"><i class="bi bi-receipt me-2"></i>Σύνοψη Quote</h5>
 
           <div class="mb-2 d-flex justify-content-between text-secondary">
             <span>Βασική τιμή:</span>
@@ -233,7 +235,7 @@ while ($eq = $eq_result->fetch_assoc()) {
           </div>
           <hr style="border-color:#c0392b;">
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <span class="text-white fw-bold">ΣΥΝΟΛΟ:</span>
+            <span class="fw-bold">ΣΥΝΟΛΟ:</span>
             <span class="price-total" id="s_total">—</span>
           </div>
 
@@ -258,6 +260,7 @@ while ($eq = $eq_result->fetch_assoc()) {
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="theme.js"></script>
 <script>
 // ============================================================
 // JavaScript — Live υπολογισμός τιμής

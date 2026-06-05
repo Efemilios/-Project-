@@ -1,0 +1,180 @@
+/* ============================================================
+   THEME: Light & Dark mode
+   Κοινό stylesheet για εναλλαγή θέματος σε όλες τις σελίδες.
+   Οι μεταβλητές --bg-*, --text-* κ.λπ. αλλάζουν μέσω του
+   attribute data-theme στο <html> (dark / light).
+   ============================================================ */
+
+/* === Color variables === */
+:root,
+[data-theme="dark"] {
+    --bg-page: #0f1117;
+    --bg-surface: #1a1d27;
+    --bg-input: #0f1117;
+    --border-color: #2a2d3a;
+    --border-input: #3a3d4a;
+    --text-main: #e0e0e0;
+    --text-strong: #ffffff;
+    --text-muted: #888;
+    --navbar-bg: #1a1d27;
+    --navbar-text: #ccc;
+    --hero-grad-start: #1a1d27;
+    --hero-grad-end: #0f1117;
+    --footer-bg: #1a1d27;
+    --eq-selected-bg: #1e0f0d;
+    --eq-pill-bg: #2a2d3a;
+
+    /* Bootstrap 5.3+ native theming */
+    --bs-body-bg: #0f1117;
+    --bs-body-color: #e0e0e0;
+}
+
+[data-theme="light"] {
+    --bg-page: #f5f7fa;
+    --bg-surface: #ffffff;
+    --bg-input: #ffffff;
+    --border-color: #dee2e6;
+    --border-input: #ced4da;
+    --text-main: #212529;
+    --text-strong: #212529;
+    --text-muted: #6c757d;
+    --navbar-bg: #ffffff;
+    --navbar-text: #495057;
+    --hero-grad-start: #e9ecef;
+    --hero-grad-end: #f5f7fa;
+    --footer-bg: #f8f9fa;
+    --eq-selected-bg: #fff5f3;
+    --eq-pill-bg: #e9ecef;
+
+    --bs-body-bg: #f5f7fa;
+    --bs-body-color: #212529;
+}
+
+/* === Βασικά theme-aware στυλ === */
+body {
+    background: var(--bg-page);
+    color: var(--text-main);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.navbar { background: var(--navbar-bg) !important; }
+.navbar .nav-link { color: var(--navbar-text) !important; }
+
+h1, h2, h3, h4, h5, h6 { color: var(--text-strong); }
+.text-white { color: var(--text-strong) !important; }
+
+footer {
+    background: var(--footer-bg);
+    border-top: 1px solid var(--border-color);
+    color: var(--text-muted);
+}
+
+.hero-banner {
+    background: linear-gradient(135deg, var(--hero-grad-start) 0%, var(--hero-grad-end) 100%);
+}
+
+/* === Κάρτες (index, cars, equipment, configurator, configurations) === */
+.card-stat,
+.card-form,
+.card-section,
+.config-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+}
+
+.config-card .header { border-bottom: 1px solid var(--border-color); }
+.config-card .body   { padding: 14px 18px; }
+
+/* === Φόρμες === */
+.form-control,
+.form-select {
+    background: var(--bg-input);
+    border: 1px solid var(--border-input);
+    color: var(--text-main);
+}
+.form-control::placeholder { color: var(--text-muted); }
+.form-control:focus,
+.form-select:focus {
+    background: var(--bg-input);
+    color: var(--text-strong);
+    box-shadow: 0 0 0 .2rem rgba(192, 57, 43, .25);
+}
+.form-label { color: var(--text-main); }
+
+/* === Πίνακες (table-dark override στο light) === */
+.table-dark {
+    --bs-table-bg: var(--bg-surface);
+    --bs-table-border-color: var(--border-color);
+}
+[data-theme="light"] .table-dark {
+    --bs-table-bg: #ffffff;
+    --bs-table-color: #212529;
+    --bs-table-border-color: #dee2e6;
+    --bs-table-striped-bg: #f8f9fa;
+    --bs-table-hover-bg: #e9ecef;
+    color: #212529;
+    background-color: #ffffff;
+}
+[data-theme="light"] .table-dark > :not(caption) > * > * {
+    background-color: #ffffff;
+    color: #212529;
+    border-bottom-color: #dee2e6;
+}
+
+/* === Εξοπλισμός (configurator) === */
+.eq-item {
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+}
+.eq-item.selected { background: var(--eq-selected-bg); }
+
+.cat-header {
+    color: var(--text-muted);
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 6px;
+    margin: 16px 0 8px;
+}
+
+/* === Quote cards (configurations) === */
+.config-card { transition: border-color .2s; }
+.eq-pill {
+    background: var(--eq-pill-bg);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: .78rem;
+    display: inline-block;
+    margin: 2px;
+    color: var(--text-main);
+}
+
+/* === Sidebar τιμής (configurator) === */
+.price-box { background: var(--bg-surface); }
+
+/* === Navbar toggler icon: explicit dark icon στο light theme === */
+[data-theme="light"] .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23212529' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* === Κουμπί εναλλαγής θέματος === */
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: .3rem .65rem;
+    line-height: 1;
+    border-radius: 8px;
+    transition: background-color .2s, color .2s, border-color .2s;
+}
+.theme-toggle i { font-size: 1rem; line-height: 1; }
+[data-theme="light"] .theme-toggle { color: #495057; border-color: #ced4da; }
+[data-theme="dark"]  .theme-toggle { color: #e0e0e0; border-color: #3a3d4a; }
+.theme-toggle:hover { transform: scale(1.05); }

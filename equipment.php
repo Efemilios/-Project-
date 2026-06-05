@@ -54,24 +54,28 @@ $equipment  = $conn->query("
     <title>AutoDealer — Εξοπλισμός</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
+    <script>
+        (function () {
+            try {
+                var t = localStorage.getItem('autodealer-theme');
+                if (t !== 'light' && t !== 'dark') {
+                    t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+                }
+                document.documentElement.setAttribute('data-theme', t);
+                document.documentElement.setAttribute('data-bs-theme', t);
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.documentElement.setAttribute('data-bs-theme', 'dark');
+            }
+        })();
+    </script>
     <style>
-        body { background:#0f1117; color:#e0e0e0; font-family:'Segoe UI',sans-serif; }
-        .navbar { background:#1a1d27 !important; border-bottom:2px solid #c0392b; }
+        .navbar { border-bottom:2px solid #c0392b; }
         .navbar-brand { color:#c0392b !important; font-weight:700; font-size:1.4rem; }
-        .nav-link { color:#ccc !important; }
         .nav-link:hover, .nav-link.active { color:#c0392b !important; }
-        .card-form { background:#1a1d27; border:1px solid #2a2d3a; border-radius:12px; }
-        .form-control, .form-select {
-            background:#0f1117; border:1px solid #3a3d4a; color:#e0e0e0;
-        }
-        .form-control:focus, .form-select:focus {
-            background:#0f1117; color:#fff; border-color:#c0392b;
-            box-shadow:0 0 0 .2rem rgba(192,57,43,.25);
-        }
-        .section-title { color:#fff; border-left:4px solid #c0392b; padding-left:12px; margin:2rem 0 1rem; }
-        .table-dark { --bs-table-bg:#1a1d27; --bs-table-border-color:#2a2d3a; }
+        .section-title { border-left:4px solid #c0392b; padding-left:12px; margin:2rem 0 1rem; }
         .cat-badge { font-size:.75rem; }
-        footer { background:#1a1d27; border-top:1px solid #2a2d3a; color:#888; }
     </style>
 </head>
 <body>
@@ -83,12 +87,17 @@ $equipment  = $conn->query("
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="nav">
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
         <li class="nav-item"><a class="nav-link" href="index.php"><i class="bi bi-house"></i> Αρχική</a></li>
         <li class="nav-item"><a class="nav-link" href="cars.php"><i class="bi bi-car-front"></i> Αυτοκίνητα</a></li>
         <li class="nav-item"><a class="nav-link active" href="equipment.php"><i class="bi bi-tools"></i> Εξοπλισμός</a></li>
         <li class="nav-item"><a class="nav-link" href="configurator.php"><i class="bi bi-sliders"></i> Διαμόρφωση</a></li>
         <li class="nav-item"><a class="nav-link" href="configurations.php"><i class="bi bi-journal-check"></i> Αποθηκευμένα</a></li>
+        <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+          <button type="button" id="themeToggle" class="btn btn-sm btn-outline-secondary theme-toggle" title="Εναλλαγή θέματος" aria-label="Εναλλαγή θέματος">
+            <i id="themeIcon" class="bi bi-moon-stars-fill"></i>
+          </button>
+        </li>
       </ul>
     </div>
   </div>
@@ -110,7 +119,7 @@ $equipment  = $conn->query("
 
   <!-- ΦΟΡΜΑ -->
   <div class="card-form p-4 mb-4">
-    <h5 class="text-white mb-3"><i class="bi bi-plus-circle-fill text-danger me-2"></i>Προσθήκη Νέου Εξοπλισμού</h5>
+    <h5 class="mb-3"><i class="bi bi-plus-circle-fill text-danger me-2"></i>Προσθήκη Νέου Εξοπλισμού</h5>
     <form method="POST" novalidate>
       <div class="row g-3">
         <div class="col-md-4">
@@ -147,7 +156,7 @@ $equipment  = $conn->query("
   </div>
 
   <!-- ΠΙΝΑΚΑΣ -->
-  <h5 class="text-white mb-3">
+  <h5 class="mb-3">
     <i class="bi bi-list-ul me-2"></i>Διαθέσιμος Εξοπλισμός
     <span class="badge bg-danger ms-2"><?= $equipment->num_rows ?></span>
   </h5>
@@ -205,5 +214,6 @@ $equipment  = $conn->query("
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="theme.js"></script>
 </body>
 </html>
